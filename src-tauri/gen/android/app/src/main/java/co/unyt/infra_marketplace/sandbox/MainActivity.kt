@@ -1,4 +1,4 @@
-package co.unyt.tx5.sandbox
+package co.unyt.infra_marketplace.sandbox
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
