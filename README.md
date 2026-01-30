@@ -1,6 +1,6 @@
-# Infrastructure Marketplace
+# Unyt Infrastructure Marketplace
 
-A Unyt application demonstrating **unit bridging and mirroring** between independent accounting networks. This application is one of two interconnected Unyt instances released as part of the January 29th, 2026 release and is designed to work alongside the **[Holo Hosting](https://github.com/unytco/unyt-sandbox-tx5)** Unyt application.
+A Unyt application demonstrating **unit bridging and mirroring** between independent accounting networks. This Infrastructure Marketplace Unyt Application is one of two interconnected Unyt Apps released as part of the January 30th, 2026 release and is designed to work alongside the **[Holo Hosting](https://github.com/unytco/holo-hosting)** Unyt application.
 
 > Built on [Holochain](https://holochain.org) 0.6.1-rc with Iroh networking
 
@@ -35,62 +35,58 @@ Let's say Alice has HoloFuel (HF) in the Holo Hosting app and wants to transfer 
 **Step 2: Submit to the Holo Hosting Bridging Smart Agreement**
 - Alice enters the amount (100 HF) and confirms the transfer
 - The transaction is submitted to the **bridging smart agreement** on the Holo Hosting network
-- The smart agreement debits 100 HF from Alice's Holo Hosting account and attaches that payment to the bridging smart agreement.
+- 100 HF is debited from Alice's Holo Hosting account and that payment is attached to the Unyt Holo Hosting Bridging Smart Agreement.
 
 **Step 3: Bridging Agent Coordination**
-- The **bridging agent** on Holo Hosting gets notified of the action and executes the bridging smart agreement
-- The bridging agent communicates the transfer details (amount, destination address, source verification) to its counterpart bridging agent on Infrastructure Marketplace
+- The **bridging agent** on Holo Hosting gets notified of the action (or checks on an interval basis) and executes the Bridging Smart Agreement
+- The Unyt Holo Hosting Bridging Agent communicates the transfer details (amount, destination address, source verification) to its counterpart bridging agent on Infrastructure Marketplace
 
-**Step 4: Credit the Mirrored Unit**
-- The bridging agent on **Infrastructure Marketplace** receives the transfer notification
-- It executes the corresponding smart agreement on the Infrastructure Marketplace side
-- Alice's Infrastructure Marketplace account is credited with **100 HF** (a mirrored version of the locked Base HF units that Alice had sent to the Bridging Smart Agreement on the Holo Hosting Unyt App)
+**Step 4: Transfer the Mirrored Unit**
+- The bridging agent on **Unyt Infrastructure Marketplace** receives the transfer notification
+- It executes the corresponding Smart Agreement on the Infrastructure Marketplace side which adjusts the Bridging Agent's credit limit by 100 HF.
+- Alice's Unyt Infrastructure Marketplace account is credited with **100 HF** (a mirrored version of the locked Base HF units)
 
 **Step 5: Confirmation**
 - Alice sees the incoming transfer appear in her Infrastructure Marketplace inbox
 - She accepts the transaction, and her balance now shows +100 HF
 
-*technically, the HF units in the Infrastructure Marketplace App are Mirrored HF, but since the other units are locked and these are 1:1, it is simpler to just refer to them also as HF.
+*Since this is really just accounting, technically, the HF units in the Infrastructure Marketplace App are Mirrored HF, but since the other units are locked and these are 1:1, it is simpler to just refer to them also as HF.
 
 ---
 
 ### Transfer In: Infrastructure Marketplace → Holo Hosting
 
-Now Alice wants to send 50 HF (-mirror) back from Infrastructure Marketplace to Holo Hosting.
+Now Alice wants to send 50 HF (-mirror) back from Unyt Infrastructure Marketplace to Holo Hosting.
 
-**Step 1: Initiate Transfer In (in Infrastructure Marketplace)**
-- Alice opens **Infrastructure Marketplace** and navigates to **Transfer Out** (from her perspective, she's sending units out)
+**Step 1: Initiate Transfer In**
+- Alice opens **Unyt Infrastructure Marketplace** and navigates to **Transfer Out**
 - She selects **HF** as the unit and **Holo Hosting** as the destination network
 - She enters her **Address from Holo Hosting** as the destination address
-  > 💡 External network contacts must be added through the Transfer In/Out flow—the standard address book only supports adding contacts within the same network,
 
 **Step 2: Submit to the Infra Bridging Smart Agreement**
 - Alice enters the amount (50 HF) and confirms
-- Alices Infrastructure Marketplace account gets debited 50 HF
-- The 50 HF are attached to the Infra Bridging Smart Agreement
+- Alice's Unyt Infrastructure Marketplace account gets debited 50 HF
+- The 50 HF are attached to the Unyt Infra Bridging Smart Agreement
 
 **Step 3: Bridging Agent Coordination**
-- The bridging agent on Infrastructure Marketplace executes the Smart Agreement 
-- It then signals the Holo Hosting bridging agent with the verified transfer details
+- The bridging agent on Unyt Infrastructure Marketplace executes the Smart Agreement
+- It then signals the Unyt Holo Hosting bridging agent with the verified transfer details
 
 **Step 4: Release from Reserve**
-- The bridging agent on **Holo Hosting** executes the return smart agreement
-- 50 HF is released from the Smart Agreement and credited to Alice's Holo Hosting account
+- The bridging agent on **Unyt Holo Hosting** executes the return smart agreement
+- 50 HF is released from the Smart Agreement and sent to Alice's Unyt Holo Hosting account
 
 **Step 5: Confirmation**
-- Alice sees the incoming transfer in her Holo Hosting inbox
-- Upon acceptance, her Holo Hosting balance reflects +50 HF
-
+- Alice sees the incoming transfer in her Unyt Holo Hosting inbox
+- Upon acceptance, her Unyt Holo Hosting balance reflects +50 HF
 
 **Note:** Rules and constraints can be put in place to control the flow of transactions across any particular bridge. Those are determined by the Bridging Smart Agreements on either side of a bridge.
 
 ---
 
-### Important: Adding External Network Contacts
+> ⚠️ **Contacts for external networks must be created during the Transfer In or Transfer Out process.** The standard address book only supports adding contacts within the same Unyt network. When you initiate a cross-network transfer, you'll be prompted to select one that you have previously saved or enter and save the destination address. This is the only way to establish a contact on an external network.
 
-> ⚠️ **Contacts for external networks must be created during the Transfer In or Transfer Out process.** The standard address book only supports adding contacts within the same Unyt network. When you initiate a cross-network transfer, you'll be prompted to select one that you have previously saved or enter and save the destination address. Again, this is the only way to establish a contact on an external network.
-
-## Features from other recent releases
+## Features from Recent Releases
 
 ### Unit Type System
 
@@ -100,9 +96,9 @@ Unyt now supports five distinct unit types, each with specialized validation and
 |------|-------------|---------------|----------|
 | **Monetary** | Fungible monetary units with variable precision | ✓ | Currency, credits |
 | **Tradable** | Embodied units with subtypes | ✓ | Inventory, assets |
-| **Measurable** | Measurable units (meters, kilograms) | ✗ | Measurements transmitted, not transferred |
-| **Rated** | Units with min/max value ranges | ✗ | Ratings, scores |
-| **Relational** | Units mapping to dictionary entries | ✗ | Categorical data |
+| **Measure** | Measurable units (meters, kilograms) | ✗ | Measurements transmitted, not transferred |
+| **Rating & Ranking** | Units with min/max value ranges | ✗ | Ratings, scores |
+| **Reputation & Relation** | Units mapping to dictionary entries | ✗ | Categorical data |
 
 ### Multi-Unit Transactions
 
@@ -145,7 +141,7 @@ Download the latest release for your platform from the [releases page](https://g
 
 To test bridging functionality, you'll need both applications:
 - **Infrastructure Marketplace** (this repo) — v0.1.0
-- **Holo Hosting** — Unyt v0.49.0
+- **[Holo Hosting](https://github.com/unytco/holo-hosting)** — Unyt v0.49.0
 
 > ⚠️ **Important:** Addresses are not transferable between networks. Each application instance generates a unique agent key.
 
